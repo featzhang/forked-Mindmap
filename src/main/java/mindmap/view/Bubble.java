@@ -1,6 +1,13 @@
 package mindmap.view;
 
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
@@ -22,41 +29,24 @@ import java.util.Optional;
 @SuppressWarnings("Duplicates")
 public class Bubble extends Pane {
 
-    ArrayList<Bubble> childrenBubblesArrayList;
-
-    ArrayList<Bubble> parentBubblesArrayList;
-
-    StringProperty Title;
-
-    ObjectProperty<Paint> BubbleColor;
-
-    ObjectProperty<Font> BubbleFont;
-
-    public BooleanProperty isChild;
-
-    IntegerProperty childCount;
-
-    private boolean isSelected;
-
-    public Rectangle coverRectangle;
-
-    public Label titleLabel;
-
-    private ArrayList<Anchor> anchorArrayList;
-
-    private Anchor topAnchor;
-
-    private Anchor bottomAnchor;
-
-    private Anchor leftAnchor;
-
-    private Anchor rightAnchor;
-
-    private MainViewController mainViewController;
-
-    private BubbleArea bubbleArea;
-
     private final int ANCHOR_RADUIS = 8;
+    public BooleanProperty isChild;
+    public Rectangle coverRectangle;
+    public Label titleLabel;
+    ArrayList<Bubble> childrenBubblesArrayList;
+    ArrayList<Bubble> parentBubblesArrayList;
+    StringProperty Title;
+    ObjectProperty<Paint> BubbleColor;
+    ObjectProperty<Font> BubbleFont;
+    IntegerProperty childCount;
+    private boolean isSelected;
+    private ArrayList<Anchor> anchorArrayList;
+    private Anchor topAnchor;
+    private Anchor bottomAnchor;
+    private Anchor leftAnchor;
+    private Anchor rightAnchor;
+    private MainViewController mainViewController;
+    private BubbleArea bubbleArea;
 
     public Bubble(MainViewController mainViewController, BubbleArea bubbleArea, double x, double y) throws IOException {
         LoadData loadData = new LoadData("/fxml/BubbleView.fxml", BubbleViewController.class);
@@ -142,7 +132,7 @@ public class Bubble extends Pane {
                 for (int i = 0; i < bubbleArea.getBubbleArrayList().size(); i++) {
                     Bubble bubble = bubbleArea.getBubbleArrayList().get(i);
                     // if ANOTHER bubble isSELECTED
-                    if(!this.myEquals(bubble)){
+                    if (!this.myEquals(bubble)) {
                         if (bubble.isSelected)
                             return;
                     }
@@ -169,10 +159,16 @@ public class Bubble extends Pane {
 
         bubbleViewController.coverRectangle.setOnMouseEntered(event -> {
             Bubble.this.setCursor(Cursor.HAND);
+            Bubble.this.getAnchorArrayList().forEach((anchor) -> {
+                anchor.setVisible(true);
+            });
         });
 
         bubbleViewController.coverRectangle.setOnMouseExited(event -> {
             Bubble.this.setCursor(Cursor.DEFAULT);
+            Bubble.this.getAnchorArrayList().forEach((anchor) -> {
+                anchor.setVisible(false);
+            });
         });
         // Dragging bubble events
         bubbleViewController.coverRectangle.setOnMousePressed(e -> {
@@ -194,8 +190,8 @@ public class Bubble extends Pane {
 
         // Change bubble title event
         bubbleViewController.titleLabel.setOnMouseClicked(mouseEvent -> {
-            if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                if(mouseEvent.getClickCount() == 2){
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
                     TextInputDialog dialog = new TextInputDialog();
                     dialog.setTitle("Введите текст");
                     dialog.setHeaderText("Введите текст элемента");
@@ -219,7 +215,7 @@ public class Bubble extends Pane {
 
     }
 
-    public void setAnchorsVisible(boolean isVisible){
+    public void setAnchorsVisible(boolean isVisible) {
         bottomAnchor.setVisible(isVisible);
         topAnchor.setVisible(isVisible);
         leftAnchor.setVisible(isVisible);

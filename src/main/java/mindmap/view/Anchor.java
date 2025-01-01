@@ -7,11 +7,9 @@ import javafx.scene.shape.Circle;
 
 public class Anchor extends Circle {
 
-    private Node parent;
-
     public SimpleDoubleProperty helpCenterX = new SimpleDoubleProperty();
-
     public SimpleDoubleProperty helpCenterY = new SimpleDoubleProperty();
+    private Node parent;
 
     public Anchor() {
     }
@@ -21,6 +19,8 @@ public class Anchor extends Circle {
         super.setFill(Color.RED);
 //        this.setCenterX(centerX);
 //        this.setCenterY(centerY);
+        super.setStroke(Color.RED);
+        super.setStrokeWidth(1);
         this.setLayoutY(centerY);
         this.setLayoutX(centerX);
     }
@@ -29,7 +29,7 @@ public class Anchor extends Circle {
         this.parent = parent;
     }
 
-    public Node getMyParent(){
+    public Node getMyParent() {
         return this.parent;
     }
 
@@ -51,15 +51,15 @@ public class Anchor extends Circle {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Circle){
+        if (obj instanceof Circle) {
             Circle circle = (Circle) obj;
             return this.getLayoutX() == circle.getLayoutX() && this.getLayoutY() == circle.getLayoutY();
         }
         return false;
     }
 
-    public boolean equalsByParent(Object obj){
-        if (obj instanceof Anchor){
+    public boolean equalsByParent(Object obj) {
+        if (obj instanceof Anchor) {
             Anchor anchor = (Anchor) obj;
             return this.parent == anchor.parent;
         }
